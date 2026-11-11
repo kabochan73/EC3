@@ -36,7 +36,7 @@
 - [x] 11. DB＋User: `personal_access_tokens`マイグレーション（残すが未使用）、`User.php`（role列）、`config/sanctum.php`
 - [x] 12. Sanctum stateful設定: `bootstrap/app.php`に`statefulApi()`、`config/cors.php`新規作成（`supports_credentials: true`）、`SANCTUM_STATEFUL_DOMAINS`/`SESSION_DRIVER=database`等の環境変数（[docs/backend/auth.md](./backend/auth.md)）
 - [x] 13. 管理者seed: `AdminUserSeeder.php`、`DatabaseSeeder.php`
-- [ ] 14. 認証API: `Api/AuthController`（`Auth::attempt()`ベースのregister/login/logout/me、`/me`更新、パスワード更新）、`routes/api.php`、throttle設定 + テスト。パスワードリセット（メール送信を伴う）は[フェーズ11](#フェーズ11-メール)に回す
+- [x] 14. 認証API: `Api/AuthController`（`Auth::attempt()`ベースのregister/login/logout/me、`/me`更新、パスワード更新）、`routes/api.php`、throttle設定 + テスト。パスワードリセット（メール送信を伴う）は[フェーズ11](#フェーズ11-メール)に回す
 
 **frontend**
 - [ ] 15. APIクライアント基盤: `shared/lib/api-server.ts`（`apiServerFetch`。Cookie転送＋Origin付与）、`shared/lib/api-client.ts`（`apiClientFetch`。CSRF自動プライム）、型配置方針（[docs/frontend/component-types.md](./frontend/component-types.md)）

@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Actions\Auth;
+
+use App\Enums\UserRole;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+/**
+ * 会員登録（docs/api/public.md POST /api/register）。
+ */
+final class RegisterUser
+{
+    public function execute(string $name, string $email, string $password): User
+    {
+        return User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make($password),
+            'role' => UserRole::Customer,
+        ]);
+    }
+}

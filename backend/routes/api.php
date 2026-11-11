@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Account\ProfileController;
+use App\Http\Controllers\Api\Auth\AuthController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +20,17 @@ Route::get('/health', function () {
         'database' => $db,
         'time' => now()->toIso8601String(),
     ]);
+});
+
+// --- 認証（公開） ---
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:login');
+
+// --- 認証必須 ---
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/me', [ProfileController::class, 'show']);
+    Route::put('/me', [ProfileController::class, 'update']);
+    Route::put('/me/password', [ProfileController::class, 'updatePassword']);
 });
