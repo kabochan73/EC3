@@ -38,3 +38,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/me', [ProfileController::class, 'update']);
     Route::put('/me/password', [ProfileController::class, 'updatePassword']);
 });
+
+// --- 管理API（auth:sanctum + admin。routes/admin.php） ---
+Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(base_path('routes/admin.php'));

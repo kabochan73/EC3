@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureAdmin;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
         // ブラウザが直接Laravelを叩くSanctumのSPA認証（セッション + CSRF）を有効化する。
         // Origin/RefererがSANCTUM_STATEFUL_DOMAINSに一致するリクエストのみ対象（docs/backend/auth.md）。
         $middleware->statefulApi();
+
+        $middleware->alias(['admin' => EnsureAdmin::class]);
+
+        // API専用アプリでnamed route 'login'が無いため、Acceptヘッダ次第でAuthenticateが
+        // route('login')へのリダイレクトを試みて500になるのを防ぐ。未認証は常にJSONの401にする。
+        $middleware->redirectGuestsTo(fn () => null);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
