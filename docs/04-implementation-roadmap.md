@@ -26,7 +26,7 @@
 - [x] 5. Next.js 16雛形 + 確定ライブラリ: `create-next-app`（TypeScript/Tailwind/ESLint/App Router）→ `zustand` `@tanstack/react-query` `react-hook-form` `@hookform/resolvers` `zod` `@stripe/stripe-js` `@stripe/react-stripe-js` `lucide-react` `@aws-sdk/client-s3`、devDependenciesに`vitest` `@testing-library/react` `@testing-library/jest-dom` `@testing-library/user-event` `jsdom` `@vitejs/plugin-react`
 - [x] 6. frontendコンテナ + env見本: `frontend/Dockerfile.dev`、`docker-compose.yml`に`frontend`サービス追加、`frontend/.env.example`、`next.config.ts`（standalone出力なし。Vercel向け）
 - [x] 7. queue worker / schedulerコンテナ: `docker-compose.yml`に`queue`/`scheduler`追加（backendと同イメージ、`command`のみ上書き）
-- [ ] 8. API疎通確認: frontend側に簡易な`apiServerFetch`/`/api/health`呼び出しを置き、ブラウザ・Next→Laravelの経路が通ることを確認（環境構築フェーズの完了マーカー）
+- [x] 8. API疎通確認: frontend側に簡易な`apiServerFetch`/`/api/health`呼び出しを置き、ブラウザ・Next→Laravelの経路が通ることを確認（環境構築フェーズの完了マーカー）
 - [ ] 9. backend用Railway本番Dockerfile: `backend/Dockerfile`、`backend/railway.json`、`backend/.dockerignore`（実デプロイは別フェーズでよいが、ファイルはここで用意）
 - [ ] 10. カスタムドメイン設定: ドメイン名を取得し、Vercel（`app.example.com`）・Railway（`api.example.com`）にそれぞれ設定（[docs/infra/vercel.md](./infra/vercel.md)・[docs/infra/railway.md](./infra/railway.md)）。次のフェーズのSanctum stateful設定の前提になる
 
