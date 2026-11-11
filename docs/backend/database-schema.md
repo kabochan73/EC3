@@ -4,6 +4,8 @@
 
 ## ER概要
 
+Mermaidが使えない環境向けの画像版: [docs/images/er-diagram.png](../images/er-diagram.png)
+
 ```mermaid
 erDiagram
     CATEGORIES ||--o{ PRODUCTS : "has"
