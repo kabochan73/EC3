@@ -39,8 +39,8 @@
 - [x] 14. 認証API: `Api/AuthController`（`Auth::attempt()`ベースのregister/login/logout/me、`/me`更新、パスワード更新）、`routes/api.php`、throttle設定 + テスト。パスワードリセット（メール送信を伴う）は[フェーズ11](#フェーズ11-メール)に回す
 
 **frontend**
-- [ ] 15. APIクライアント基盤: `shared/lib/api-server.ts`（`apiServerFetch`。Cookie転送＋Origin付与）、`shared/lib/api-client.ts`（`apiClientFetch`。CSRF自動プライム）、型配置方針（[docs/frontend/component-types.md](./frontend/component-types.md)）
-- [ ] 16. ログイン/登録画面: `features/public/auth/`、`apiClientFetch`でLaravelに直接送信 + `middleware.ts` + テスト
+- [x] 15. APIクライアント基盤: `shared/lib/api-server.ts`（`apiServerFetch`。Cookie転送＋Origin付与）、`shared/lib/api-client.ts`（`apiClientFetch`。CSRF自動プライム）、型配置方針（[docs/frontend/component-types.md](./frontend/component-types.md)）
+- [x] 16. ログイン/登録画面: `features/public/auth/`、`apiClientFetch`でLaravelに直接送信 + `middleware.ts` + テスト
 - [ ] 17. 管理画面ガード: `app/admin/layout.tsx`、`requireAdmin()` + テスト
 
 ## フェーズ3: CMS
