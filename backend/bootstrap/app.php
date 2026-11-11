@@ -13,7 +13,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // ブラウザが直接Laravelを叩くSanctumのSPA認証（セッション + CSRF）を有効化する。
+        // Origin/RefererがSANCTUM_STATEFUL_DOMAINSに一致するリクエストのみ対象（docs/backend/auth.md）。
+        $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
