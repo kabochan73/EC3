@@ -47,7 +47,7 @@
 | DB | PostgreSQL 16 |
 | 画像ストレージ | Railway Storage Bucket（private・S3互換）。Next.jsの`/media`プロキシ経由で配信。ローカルはRustFS |
 | backendアプリサーバー | nginx + php-fpm（`serversideup/php:8.4-fpm-nginx`をローカル・本番で共用） |
-| テスト | Pest 3（backend）/ Vitest + Testing Library（frontend）。実装と同時に書く。GitHub ActionsのCIで両方実行 |
+| テスト | Pest 4（backend）/ Vitest + Testing Library（frontend）。実装と同時に書く。GitHub ActionsのCIで両方実行 |
 | ローカル実行形態 | すべてDocker。`docker compose up -d`でfrontend / backend / queue / scheduler / db / rustfs / mailpitが起動 |
 | 本番実行形態 | backend/queue/scheduler/DB/bucket = Railway（Docker）、frontend = **Vercel** |
 

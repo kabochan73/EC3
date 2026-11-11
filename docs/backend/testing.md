@@ -6,7 +6,7 @@ frontend側は [docs/frontend/testing.md](../frontend/testing.md) 参照。
 
 前回（EC-Portfolio2）でPestを導入し、「実装と同時にテストを書く」方針を確立した。今回も同じ方針を継続する。
 
-- **Pest 3**を最初に入れる（[docs/04-implementation-roadmap.md](../04-implementation-roadmap.md) フェーズ1）。
+- **Pest 4**を最初に入れる（[docs/04-implementation-roadmap.md](../04-implementation-roadmap.md) フェーズ1）。Pest 3系（`pest-plugin-laravel` ^3.2）はLaravel ^11|^12までの対応で、Laravel 13とは依存関係が衝突するため導入できない。
 - **ステップごとに、対応するテストを書いてからコミット**。テストの無いステップはコミットしない（純粋なdocs / 設定変更を除く）。
 - カバレッジ数値は追わない。「壊れたら困る導線」をFeatureテストで押さえる。
 

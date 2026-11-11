@@ -78,7 +78,7 @@
 
 ## テスト（今回、実装と同時に書く方針に変更）
 
-- [ ] backend: Feature中心 + 純粋ロジックのUnit（Pest 3）
+- [ ] backend: Feature中心 + 純粋ロジックのUnit（Pest 4）
 - [ ] frontend: 単体テスト（Vitest + Testing Library）
 - [ ] CI（GitHub Actions、backend/frontend並列ジョブ）
 
