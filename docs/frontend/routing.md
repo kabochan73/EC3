@@ -25,7 +25,7 @@
 
 ブランド紹介は独立ページを持たず`/`トップページ内のセクションとして統合する。カテゴリ別一覧（`/collections/[category]`）・全商品一覧も作らない（小規模カタログのため、トップのカテゴリセクションで出し切る）。
 
-未ログインで要ログインページに来たら`/login?redirect=<元パス>`に転送。`/admin/*`は`middleware.ts`でCookie有無をチェック、実際のrole確認はServer Componentの`requireAdmin()`。
+未ログインで要ログインページに来たら`/login?redirect=<元パス>`に転送。`/admin/*`は`proxy.ts`（Next.js 16。旧middleware.ts）でCookie有無をチェック、実際のrole確認はServer Componentの`requireAdmin()`。
 
 メール認証は実装しない。登録さえすれば誰でも注文確定・決済まで一通り体験できる。
 

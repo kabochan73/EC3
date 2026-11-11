@@ -92,7 +92,7 @@ public function logout(Request $request)
 - `users.role`（`customer` / `admin`、default `customer`）。シーダーで管理者1人を投入
 - `GET /api/me`は`role`を返す
 - Laravel: `/api/admin/*`は`auth:sanctum` + `admin`ミドルウェア（`EnsureAdmin`、`$user->role === UserRole::Admin`）。認証済みだが権限なしは403。**`auth:sanctum`ガードの解決ロジックはセッション認証でも変わらない**（内部でセッション/トークンのどちらでも認証済みユーザーを解決できる）
-- Next.js: `middleware.ts`で`/admin/*`をCookie有無だけチェック。実role確認はServer Componentの`requireAdmin()`（`role !== 'admin'`なら`/`へ）。ログインは通常の`/login`を共用
+- Next.js: `proxy.ts`（Next.js 16。旧middleware.ts）で`/admin/*`をCookie有無だけチェック。実role確認はServer Componentの`requireAdmin()`（`role !== 'admin'`なら`/`へ）。ログインは通常の`/login`を共用
 
 ## パスワードリセット（Laravel標準を薄く使う）
 

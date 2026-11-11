@@ -14,7 +14,7 @@
 
 ```
 frontend/
-├── middleware.ts                 # /account /checkout /admin のCookie有無ガード（`ecp_session`）
+├── proxy.ts                      # /account /checkout /admin のCookie有無ガード（`ecp_session`。Next.js 16。旧middleware.ts）
 ├── app/
 │   ├── layout.tsx                # <html><body>のシェルだけ
 │   ├── globals.css               # Tailwind + デザイントークン
