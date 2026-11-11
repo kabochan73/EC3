@@ -1,0 +1,98 @@
+# ─────────────────────────────────────────────────────────────
+# ローカル開発環境。frontend / backend / queue も含めて「全部Docker」
+# （docs/infra/local-dev.md）。一度に全部は作らず、ロードマップのフェーズ1の
+# ステップどおり段階的に足していく:
+#
+#   Step 2 : db / rustfs / mailpit だけ。まず土台の疎通を確認する  ← いまここ
+#   Step 3 : backend（serversideup/php）を追加
+#   Step 4 : frontend（next dev）を追加
+#   Step 7 : queue worker / scheduler を追加
+#
+# コンテナ名はecp5-*（前回系譜ecp4-*の次世代）。
+#
+# 使い方:
+#   docker compose up -d        # 起動
+#   docker compose down         # 停止（データはvolumeに残る）
+#   docker compose down -v      # データごと破棄
+# ─────────────────────────────────────────────────────────────
+
+services:
+  # ── PostgreSQL ───────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: ecp5-db
+    environment:
+      # backend/.envのDB_DATABASE / DB_USERNAME / DB_PASSWORDと一致させること
+      POSTGRES_DB: ecp
+      POSTGRES_USER: ecp
+      POSTGRES_PASSWORD: ecpsecret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ecp5-pgdata:/var/lib/postgresql/data
+      # 初回起動（空ボリューム）時に一度だけ実行。テスト用DB(ecp_test)を作る
+      - ./backend/database/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecp -d ecp"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ── RustFS（S3互換ストレージ）────────────────────────────
+  # 商品・CMS画像の置き場。本番はRailway Storage Bucket（S3互換）なので、
+  # ローカルもS3 APIで話せるものを使う。
+  rustfs:
+    image: rustfs/rustfs:1.0.1
+    container_name: ecp5-rustfs
+    environment:
+      # ルート資格情報。backend/.envとfrontend/.env.localのAWS_* / BUCKET_*に使う
+      RUSTFS_ACCESS_KEY: ecp
+      RUSTFS_SECRET_KEY: ecpsecret
+      RUSTFS_CONSOLE_ENABLE: "true"
+    ports:
+      - "9000:9000" # S3 API（Laravel / Next.jsからのアクセス先）
+      - "9001:9001" # 管理コンソール（ブラウザでhttp://localhost:9001/rustfs/console/）
+    volumes:
+      - ecp5-rustfs:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fs", "http://localhost:9000/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ── バケット初期化（使い捨て）─────────────────────────────
+  # rustfsがhealthyになったら1回だけ実行してバケットを作る（既にあれば何もしない）。
+  createbuckets:
+    image: amazon/aws-cli:2.38.1
+    container_name: ecp5-createbuckets
+    depends_on:
+      rustfs:
+        condition: service_healthy
+    environment:
+      AWS_ACCESS_KEY_ID: ecp
+      AWS_SECRET_ACCESS_KEY: ecpsecret
+      AWS_DEFAULT_REGION: us-east-1
+    entrypoint: >
+      /bin/sh -c "
+      aws --endpoint-url http://rustfs:9000 s3api head-bucket --bucket ec3-media 2>/dev/null ||
+      aws --endpoint-url http://rustfs:9000 s3 mb s3://ec3-media &&
+      echo 'bucket ec3-media ready';
+      "
+    restart: "no"
+
+  # ── Mailpit（ローカルのSMTP受信箱）──────────────────────
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: ecp5-mailpit
+    environment:
+      MP_MAX_MESSAGES: "500"
+      MP_SMTP_AUTH_ACCEPT_ANY: "1"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "1"
+    ports:
+      - "8025:8025" # Web UI
+      # SMTP(1025)はコンテナ間通信のみ。ホストには公開しない
+
+# ── 永続ボリューム ─────────────────────────────────────────
+volumes:
+  ecp5-pgdata:
+  ecp5-rustfs:
