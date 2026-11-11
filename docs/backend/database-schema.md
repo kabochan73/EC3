@@ -4,15 +4,93 @@
 
 ## ER概要
 
-```
-categories 1─< products 1─< product_images
-                      1─< product_variants
-users(role) 1─< addresses
-users       1─< orders 1─< order_items >─0..1 products
-                     1─< order_items >─0..1 product_variants
-orders      1─1 payment
-stripe_events   (Webhook冪等性のための処理済みイベント台帳)
-site_contents   (トップページのCMSコンテンツ)
+```mermaid
+erDiagram
+    CATEGORIES ||--o{ PRODUCTS : "has"
+    PRODUCTS ||--o{ PRODUCT_IMAGES : "has"
+    PRODUCTS ||--o{ PRODUCT_VARIANTS : "has"
+    USERS ||--o{ ADDRESSES : "has"
+    USERS ||--o{ ORDERS : "places"
+    ORDERS ||--o{ ORDER_ITEMS : "contains"
+    PRODUCTS o|--o{ ORDER_ITEMS : "snapshot of"
+    PRODUCT_VARIANTS o|--o{ ORDER_ITEMS : "snapshot of"
+    ORDERS ||--o| PAYMENTS : "has"
+    USERS o|--o{ SITE_CONTENTS : "last edited by"
+
+    CATEGORIES {
+        bigserial id PK
+        varchar slug UK
+        varchar name
+        integer position
+    }
+    PRODUCTS {
+        bigserial id PK
+        bigint category_id FK
+        varchar slug UK
+        varchar name
+        integer price
+        boolean is_published
+        jsonb size_chart
+    }
+    PRODUCT_IMAGES {
+        bigserial id PK
+        bigint product_id FK
+        varchar path
+        integer position
+    }
+    PRODUCT_VARIANTS {
+        bigserial id PK
+        bigint product_id FK
+        varchar sku UK
+        varchar size
+        varchar color
+        integer stock
+    }
+    USERS {
+        bigserial id PK
+        varchar email UK
+        varchar password
+        varchar role
+    }
+    ADDRESSES {
+        bigserial id PK
+        bigint user_id FK
+        boolean is_default
+    }
+    ORDERS {
+        bigserial id PK
+        bigint user_id FK
+        varchar order_number UK
+        varchar status
+        integer total
+    }
+    ORDER_ITEMS {
+        bigserial id PK
+        bigint order_id FK
+        bigint product_id FK "nullable"
+        bigint product_variant_id FK "nullable"
+        integer quantity
+        integer line_total
+    }
+    PAYMENTS {
+        bigserial id PK
+        bigint order_id FK "UNIQUE"
+        varchar stripe_payment_intent_id UK
+        varchar status
+        integer amount
+    }
+    STRIPE_EVENTS {
+        bigserial id PK
+        varchar stripe_event_id UK
+        varchar type
+        timestamp processed_at
+    }
+    SITE_CONTENTS {
+        bigserial id PK
+        varchar key UK
+        jsonb data
+        bigint updated_by FK "nullable"
+    }
 ```
 
 性別区別なし・ユニセックス。サイズは`S` `M` `L`（アクセサリーは`FREE`単一variant）。
