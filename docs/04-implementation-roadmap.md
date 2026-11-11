@@ -49,7 +49,7 @@
 - [x] 18. DB: `site_contents`マイグレーション、`SiteContentSeeder`、公開/管理API（[docs/backend/cms.md](./backend/cms.md)）+ テスト
 
 **frontend**
-- [ ] 19. トップページのCMS駆動化（Hero/Concept/Lookbook/About。商品セクションはまだ無い状態で先に動かす）、CMS編集画面（[docs/frontend/cms.md](./frontend/cms.md)）
+- [x] 19. トップページのCMS駆動化（Hero/Concept/Lookbook/About。商品セクションはまだ無い状態で先に動かす）、CMS編集画面（[docs/frontend/cms.md](./frontend/cms.md)）
 
 ## フェーズ4: カテゴリ・商品管理
 
