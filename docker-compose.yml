@@ -5,8 +5,8 @@
 #
 #   Step 2 : db / rustfs / mailpit だけ。まず土台の疎通を確認する
 #   Step 4 : backend（serversideup/php）を追加
-#   Step 6 : frontend（next dev）を追加  ← いまここ
-#   Step 7 : queue worker / scheduler を追加
+#   Step 6 : frontend（next dev）を追加
+#   Step 7 : queue worker / scheduler を追加  ← いまここ（環境構築ほぼ完了）
 #
 # コンテナ名はecp5-*（前回系譜ecp4-*の次世代）。
 #
@@ -105,6 +105,57 @@ services:
         condition: service_healthy
       mailpit:
         condition: service_started
+
+  # ── queue worker（Laravel）───────────────────────────────────
+  # backendと同じイメージ・同じコードを使い、起動コマンドだけqueue:workに差し替える。
+  # 載せるのはメール送信ジョブ（パスワードリセット / 注文確認 / 発送通知）。
+  # コードを変えたらdocker compose restart queue（workerは起動時にコードを読む）。
+  queue:
+    image: serversideup/php:8.4-fpm-nginx
+    container_name: ecp5-queue
+    command: ["php", "artisan", "queue:work", "--tries=3", "--sleep=3", "--max-time=3600"]
+    # --max-timeでworkerは1時間ごとに自ら終了する（メモリリーク対策の定石）。
+    # Dockerに再起動させて常駐を維持する。
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      SSL_MODE: "off"
+      AUTORUN_ENABLED: "false" # migrate等はbackend側で手動。workerはやらない
+    # serversideupの既定healthcheckはwebサーバーを見に行くが、このコンテナは
+    # queue:workだけを動かすのでプロセスの存在で判定する
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f 'queue:work' > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+
+  # ── scheduler（Laravelスケジューラ。routes/console.php）──────
+  # 期限切れの未決済注文のキャンセルなどを定期実行する。
+  # queueと同じくコードを変えたらdocker compose restart scheduler。
+  scheduler:
+    image: serversideup/php:8.4-fpm-nginx
+    container_name: ecp5-scheduler
+    command: ["php", "artisan", "schedule:work"]
+    restart: unless-stopped
+    volumes:
+      - ./backend:/var/www/html
+    environment:
+      SSL_MODE: "off"
+      AUTORUN_ENABLED: "false"
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f 'schedule:work' > /dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      db:
+        condition: service_healthy
 
   # ── frontend（Next.js / next dev）───────────────────────────
   # ブラウザが直接触るページサーバー。ソースをマウントしてホットリロード。
