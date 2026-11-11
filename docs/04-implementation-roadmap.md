@@ -41,7 +41,7 @@
 **frontend**
 - [x] 15. APIクライアント基盤: `shared/lib/api-server.ts`（`apiServerFetch`。Cookie転送＋Origin付与）、`shared/lib/api-client.ts`（`apiClientFetch`。CSRF自動プライム）、型配置方針（[docs/frontend/component-types.md](./frontend/component-types.md)）
 - [x] 16. ログイン/登録画面: `features/public/auth/`、`apiClientFetch`でLaravelに直接送信 + `proxy.ts`（旧middleware.ts。Next.js 16でproxyに名称変更） + テスト
-- [ ] 17. 管理画面ガード: `app/admin/layout.tsx`、`requireAdmin()` + テスト
+- [x] 17. 管理画面ガード: `app/admin/layout.tsx`、`requireAdmin()` + テスト
 
 ## フェーズ3: CMS
 
