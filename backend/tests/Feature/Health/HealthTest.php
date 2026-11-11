@@ -2,7 +2,7 @@
 
 // GET /api/health … APIが起きているか・DBに繋がっているかを確認する。
 
-it('reports ok and a reachable database', function () {
+it('okを返し、DBに接続できる', function () {
     $this->getJson('/api/health')
         ->assertOk()
         ->assertJson([
