@@ -46,6 +46,8 @@ export async function apiServerFetch<T>(path: string, init: RequestInit = {}): P
 
 公開データ（商品・カテゴリ・CMS）の取得はCookie・Originとも不要なので、ISRタグ付きfetchはこのヘルパーのオプション（`Cookie`/`Origin`ヘッダを付けない呼び方）で変わらず動く。
 
+**実装上の注意**: 上のサンプルは常に`cache: init.cache ?? 'no-store'`を付けているが、Next.jsは`cache: 'no-store'`と`next.revalidate`を同時に渡すと両方を黙って破棄しdynamicに落ちる（`node_modules/next/dist/server/lib/patch-fetch.js`の`isConflictingRevalidate`）。実装では`init.next?.revalidate`が指定されているとき（ISRタグ付き取得）は`cache`オプションを付与せず、個人化データ（`next`未指定）のときだけ`no-store`をデフォルトにする。
+
 ## ISRタグ設計
 
 `shared/lib/revalidate.ts`にタグ名を集約:
