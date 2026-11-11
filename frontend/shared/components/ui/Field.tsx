@@ -16,16 +16,16 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
 ) {
   return (
     <div>
-      <label htmlFor={id} className="block text-[11px] tracking-widest text-gray-500 uppercase">
+      <label htmlFor={id} className="block text-[18px] tracking-widest text-gray-500 uppercase">
         {label}
       </label>
       <input
         id={id}
         ref={ref}
-        className={`mt-2 w-full border-b border-black bg-transparent py-2 text-sm outline-none ${className ?? ""}`}
+        className={`mt-2 w-full border-b border-black bg-transparent py-2 text-[18px] outline-none ${className ?? ""}`}
         {...rest}
       />
-      {error && <p className="mt-1 text-xs text-gray-600">{error}</p>}
+      {error && <p className="mt-1 text-lg text-gray-600">{error}</p>}
     </div>
   );
 });
