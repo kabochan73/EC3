@@ -220,6 +220,7 @@ docker compose exec frontend npx tsc --noEmit
 | RustFSに接続できない | `AWS_ENDPOINT=http://rustfs:9000`と`AWS_USE_PATH_STYLE_ENDPOINT=true` |
 | ログインしても認証状態が保持されない | `SANCTUM_STATEFUL_DOMAINS`にポート（`localhost:3000`）が入っているか確認。Client Componentのfetchに`credentials: 'include'`が付いているか確認 |
 | 書き込みAPIが419（CSRFトークン不一致） | `GET /sanctum/csrf-cookie`を先に呼んでいるか、`X-XSRF-TOKEN`ヘッダに`XSRF-TOKEN`Cookieの値を付けているか確認 |
+| 書き込みAPIが419になる（上を満たしていても） | `localhost`ドメインのCookieはポートを区別しないため、同じマシンで動かした**別のLaravel/Sanctumプロジェクト**（例: `EC-Portfolio2`。同じ`ecp_session` / `XSRF-TOKEN`という名前）の古いCookieが残っていて誤って使われている可能性がある。ブラウザの開発者ツールで`localhost`の`XSRF-TOKEN` / `ecp_session`Cookieを削除してから再試行する |
 
 ## 本番との差分
 
