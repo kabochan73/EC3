@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Shop\SiteContentController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,9 @@ Route::get('/health', function () {
         'time' => now()->toIso8601String(),
     ]);
 });
+
+// --- 公開 ---
+Route::get('/content', [SiteContentController::class, 'index']);
 
 // --- 認証（公開） ---
 Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
