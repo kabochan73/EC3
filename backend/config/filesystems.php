@@ -56,7 +56,9 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+            // trueにしないと保存失敗時にput()がfalseを返すだけになり、
+            // CreateProductImage等が画像の行を作ってしまう（docs/backend/storage-layout.md）
+            'throw' => true,
             'report' => false,
         ],
 

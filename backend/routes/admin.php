@@ -11,3 +11,5 @@ Route::get('/content', [SiteContentController::class, 'index']);
 // {key}は4種のいずれかに制約（不一致は404。docs/backend/cms.md「不正なkeyは404」）
 Route::put('/content/{key}', [SiteContentController::class, 'update'])
     ->where('key', implode('|', SiteContent::KEYS));
+Route::post('/content/{key}/images', [SiteContentController::class, 'uploadImage'])
+    ->where('key', implode('|', SiteContent::KEYS));

@@ -6,7 +6,9 @@ use App\Actions\Admin\Content\UpdateSiteContent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSiteContentRequest;
 use App\Models\SiteContent;
+use App\Services\StorageService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SiteContentController extends Controller
 {
@@ -25,5 +27,20 @@ class SiteContentController extends Controller
         $content = $updateSiteContent->execute($key, $request->validated(), $request->user());
 
         return response()->json(['data' => $content->data]);
+    }
+
+    /**
+     * POST /api/admin/content/{key}/images（docs/api/admin.md）。
+     * アップロードのみ行い、dataへの反映はしない（フロントがurlを受け取ってからPUTする2段階）。
+     */
+    public function uploadImage(Request $request, string $key, StorageService $storage): JsonResponse
+    {
+        $request->validate([
+            'image' => ['required', 'image', 'max:5120'],
+        ]);
+
+        $path = $storage->put("content/{$key}", $request->file('image'));
+
+        return response()->json(['url' => "/media/{$path}"]);
     }
 }
