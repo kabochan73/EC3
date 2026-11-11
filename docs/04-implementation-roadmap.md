@@ -24,7 +24,7 @@
 - [x] 3. Laravel 13雛形 + Sanctum: `composer create-project laravel/laravel backend "^13.0"`（dockerのcomposerイメージ経由）→ `composer require laravel/sanctum` → `php artisan install:api` → `php artisan key:generate`
 - [x] 4. backendコンテナ + `/api/health`: `docker-compose.yml`に`backend`サービス追加（`image: serversideup/php:8.4-fpm-nginx`を直接指定、`./backend:/var/www/html`バインドマウント）、`backend/.env.example`、簡易ヘルスチェックルート
 - [x] 5. Next.js 16雛形 + 確定ライブラリ: `create-next-app`（TypeScript/Tailwind/ESLint/App Router）→ `zustand` `@tanstack/react-query` `react-hook-form` `@hookform/resolvers` `zod` `@stripe/stripe-js` `@stripe/react-stripe-js` `lucide-react` `@aws-sdk/client-s3`、devDependenciesに`vitest` `@testing-library/react` `@testing-library/jest-dom` `@testing-library/user-event` `jsdom` `@vitejs/plugin-react`
-- [ ] 6. frontendコンテナ + env見本: `frontend/Dockerfile.dev`、`docker-compose.yml`に`frontend`サービス追加、`frontend/.env.example`、`next.config.ts`（standalone出力なし。Vercel向け）
+- [x] 6. frontendコンテナ + env見本: `frontend/Dockerfile.dev`、`docker-compose.yml`に`frontend`サービス追加、`frontend/.env.example`、`next.config.ts`（standalone出力なし。Vercel向け）
 - [ ] 7. queue worker / schedulerコンテナ: `docker-compose.yml`に`queue`/`scheduler`追加（backendと同イメージ、`command`のみ上書き）
 - [ ] 8. API疎通確認: frontend側に簡易な`apiServerFetch`/`/api/health`呼び出しを置き、ブラウザ・Next→Laravelの経路が通ることを確認（環境構築フェーズの完了マーカー）
 - [ ] 9. backend用Railway本番Dockerfile: `backend/Dockerfile`、`backend/railway.json`、`backend/.dockerignore`（実デプロイは別フェーズでよいが、ファイルはここで用意）
