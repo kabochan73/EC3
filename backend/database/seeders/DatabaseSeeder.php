@@ -8,14 +8,16 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * - AdminUserSeeder … 管理者アカウント1人
+     * - SiteContentSeeder … トップページCMSの初期値（hero / concept / lookbook / about）
      *
-     * カテゴリ・CMS・商品のシーダーはそれぞれの機能を作るフェーズで追加する。
-     * 冪等（updateOrCreate）。ダミー顧客は手動投入する。
+     * カテゴリ・商品のシーダーはそれぞれの機能を作るフェーズで追加する。
+     * 冪等（updateOrCreate / firstOrCreate）。ダミー顧客は手動投入する。
      */
     public function run(): void
     {
         $this->call([
             AdminUserSeeder::class,
+            SiteContentSeeder::class,
         ]);
     }
 }
