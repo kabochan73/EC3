@@ -19,7 +19,7 @@ Tailwind v4のCSS-first方式で`globals.css`にトークンを定義する。
 - 画像配信は`/media/[...key]/route.ts`（`@aws-sdk/client-s3`の`GetObjectCommand`、ローカルのRustFSは`forcePathStyle: true`）。`next/image`のloaderはデフォルト（同一オリジン`/media/...`）。
 - 商品のseedは画像なし（本番の画像は管理画面からアップロードする）。CMSも画像を持てる。
 
-## 未決定
+## 画像の扱い（フェーズ3着手時に決定）
 
-前回（EC-Portfolio2）は商品・CMSの画像を一切用意せず、`bg-mist`のグレーボックスのまま完成させた（トップのHero/Lookbook/Aboutも画像ゼロ）。今回、実際の画像を用意してデザインの見栄えを上げるかどうかは未決定（[docs/02-decisions-log.md](../02-decisions-log.md)）。実装フェーズ（[docs/04-implementation-roadmap.md](../04-implementation-roadmap.md)フェーズ3のCMS・フェーズ4の商品管理）に入る前に決める。
+前回（EC-Portfolio2）は商品・CMSの画像を一切用意せず、`bg-mist`のグレーボックスのまま完成させた（トップのHero/Lookbook/Aboutも画像ゼロ）。今回も同じ方針で進める（[docs/02-decisions-log.md](../02-decisions-log.md)）。管理画面からの画像アップロード機能自体は実装するが、実画像の用意はしない。
 </content>

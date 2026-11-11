@@ -48,7 +48,12 @@
 
 ## 未決定（これから詰める項目）
 
-- フロントエンドのデザインの具体的なテイスト（前回は画像ゼロのグレーボックスのまま完成させた。今回変えるかは [docs/frontend/design-reference.md](./frontend/design-reference.md) で検討する）
 - 実装ロードマップのフェーズ2以降の詳細ステップ（[docs/04-implementation-roadmap.md](./04-implementation-roadmap.md) に大枠のみ記載。各フェーズ着手時に詳細を詰める）
 - 購入するカスタムドメイン名そのもの（未定。実装着手前に決める）
+
+## フェーズ3着手時に決めたこと
+
+| 項目 | 決定内容 |
+|---|---|
+| CMS画像（Hero/Lookbook/About） | 今回も画像なしで進める（前回同様、`bg-mist`のグレーボックス＋`NO IMAGE`表示）。管理画面からの画像アップロード機能自体は実装するが、実画像の用意はしない |
 </content>
