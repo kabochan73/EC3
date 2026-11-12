@@ -60,7 +60,7 @@
 
 **frontend**
 - [x] 23. トップページに商品セクションを追加（[フェーズ3](#フェーズ3-cms)で作ったCMSセクションの下に差し込む）+ 商品カード
-- [ ] 24. 商品詳細ページ
+- [x] 24. 商品詳細ページ
 - [ ] 25. 管理画面の商品・カテゴリ管理画面、`app/api/revalidate/route.ts`（[docs/frontend/rendering-strategy.md](./frontend/rendering-strategy.md)）
 
 ## フェーズ5: 会員閲覧
