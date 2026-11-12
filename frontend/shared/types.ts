@@ -3,3 +3,7 @@
 
 export type ApiResource<T> = { data: T };
 export type ApiCollection<T> = { data: T[] };
+export type ApiPaginated<T> = {
+  data: T[];
+  meta: { current_page: number; last_page: number };
+};
