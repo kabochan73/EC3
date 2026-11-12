@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Shop\CategoryController;
+use App\Http\Controllers\Api\Shop\ProductController;
 use App\Http\Controllers\Api\Shop\SiteContentController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::get('/health', function () {
 // --- 公開 ---
 Route::get('/content', [SiteContentController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/products', [ProductController::class, 'index']);
 
 // --- 認証（公開） ---
 Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
