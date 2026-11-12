@@ -1,10 +1,10 @@
 // Server Component専用の取得関数（docs/frontend/cms.md、docs/frontend/rendering-strategy.md）。
 
-import { apiServerFetch } from "@/shared/lib/api-server";
+import { ApiError, apiServerFetch } from "@/shared/lib/api-server";
 import { tags } from "@/shared/lib/revalidate";
 import type { ApiCollection, ApiResource } from "@/shared/types";
 
-import type { Category, ProductSummary, SiteContent } from "./types";
+import type { Category, ProductDetail, ProductSummary, SiteContent } from "./types";
 
 export async function getContent(): Promise<SiteContent> {
   const res = await apiServerFetch<ApiResource<SiteContent>>("/api/content", {
@@ -12,6 +12,20 @@ export async function getContent(): Promise<SiteContent> {
   });
 
   return res.data;
+}
+
+/** 未公開・存在しないslugはnull（呼び出し側がnotFound()する）。 */
+export async function getProduct(slug: string): Promise<ProductDetail | null> {
+  try {
+    const res = await apiServerFetch<ApiResource<ProductDetail>>(`/api/products/${slug}`, {
+      next: { tags: [tags.product(slug), tags.products], revalidate: 600 },
+    });
+
+    return res.data;
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return null;
+    throw error;
+  }
 }
 
 export async function getCategories(): Promise<Category[]> {

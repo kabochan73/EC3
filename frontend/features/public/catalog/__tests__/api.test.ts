@@ -11,8 +11,8 @@ vi.mock("@/shared/lib/api-server", async () => {
   return { ...actual, apiServerFetch: vi.fn() };
 });
 
-import { apiServerFetch } from "@/shared/lib/api-server";
-import { getCategories, getContent, getProducts } from "../api";
+import { ApiError, apiServerFetch } from "@/shared/lib/api-server";
+import { getCategories, getContent, getProduct, getProducts } from "../api";
 
 describe("getContent", () => {
   beforeEach(() => {
@@ -82,5 +82,38 @@ describe("getProducts", () => {
       "/api/products?category=tops&new=true&limit=4",
       expect.anything(),
     );
+  });
+});
+
+describe("getProduct", () => {
+  beforeEach(() => {
+    vi.mocked(apiServerFetch).mockReset();
+  });
+
+  it("/api/products/{slug}をproduct:{slug}とproductsのタグ付きで呼び、dataを返す", async () => {
+    const product = { id: 1, name: "P", slug: "p" };
+    vi.mocked(apiServerFetch).mockResolvedValue({ data: product });
+
+    const result = await getProduct("p");
+
+    expect(apiServerFetch).toHaveBeenCalledWith(
+      "/api/products/p",
+      expect.objectContaining({ next: { tags: ["product:p", "products"], revalidate: 600 } }),
+    );
+    expect(result).toEqual(product);
+  });
+
+  it("404はnullを返す", async () => {
+    vi.mocked(apiServerFetch).mockRejectedValue(new ApiError(404, null));
+
+    const result = await getProduct("not-exists");
+
+    expect(result).toBeNull();
+  });
+
+  it("404以外のエラーはそのまま投げる", async () => {
+    vi.mocked(apiServerFetch).mockRejectedValue(new ApiError(500, null));
+
+    await expect(getProduct("p")).rejects.toThrow(ApiError);
   });
 });

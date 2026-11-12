@@ -62,3 +62,43 @@ export type ProductSummary = {
   is_new: boolean;
   images: ProductImage[];
 };
+
+// backend/app/Http/Resources/Shop/ProductVariantResource（公開向け。生のstockは返らない）
+
+export type ProductVariant = {
+  id: number;
+  size: string;
+  color: string | null;
+  stock_status: StockStatus;
+  stock_label: string;
+  selectable: boolean;
+};
+
+// backend/app/Models/Productのsize_chart JSONフォーマット（docs/backend/database-schema.md）
+
+export type SizeChart = {
+  unit: string;
+  columns: string[];
+  rows: Record<string, number[]>;
+};
+
+// backend/app/Http/Resources/Shop/ProductDetailResource
+
+export type ProductDetail = {
+  id: number;
+  name: string;
+  slug: string;
+  price: number;
+  category: { name: string; slug: string };
+  description: string;
+  material: string;
+  care: string | null;
+  origin: string;
+  product_code: string;
+  size_chart: SizeChart | null;
+  is_new: boolean;
+  images: ProductImage[];
+  colors: string[];
+  variants: ProductVariant[];
+  related: ProductSummary[];
+};
