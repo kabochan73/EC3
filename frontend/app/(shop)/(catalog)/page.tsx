@@ -1,15 +1,17 @@
-import { getContent } from "@/features/public/catalog/api";
+import { getCategories, getContent, getProducts } from "@/features/public/catalog/api";
 import { AboutSection } from "@/features/public/catalog/components/AboutSection";
 import { BrandConcept } from "@/features/public/catalog/components/BrandConcept";
+import { CategoryGrid } from "@/features/public/catalog/components/CategoryGrid";
 import { Hero } from "@/features/public/catalog/components/Hero";
 import { Lookbook } from "@/features/public/catalog/components/Lookbook";
 
-/**
- * トップページ（CMS駆動。docs/frontend/routing.md）。
- * カテゴリごとの商品セクションはフェーズ4で、Lookbookとaboutの間に追加する。
- */
+/** トップページ（CMS駆動。docs/frontend/routing.md）。 */
 export default async function HomePage() {
-  const content = await getContent();
+  const [content, categories, products] = await Promise.all([
+    getContent(),
+    getCategories(),
+    getProducts(),
+  ]);
 
   return (
     <>
@@ -20,6 +22,7 @@ export default async function HomePage() {
       />
       <BrandConcept body={content.concept.body} />
       <Lookbook images={content.lookbook.images} />
+      <CategoryGrid categories={categories} products={products} />
       <AboutSection blocks={content.about.blocks} />
     </>
   );
