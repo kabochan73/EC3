@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\ProductController;
+use App\Http\Controllers\Api\Admin\ProductImageController;
 use App\Http\Controllers\Api\Admin\SiteContentController;
 use App\Models\SiteContent;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,11 @@ Route::apiResource('categories', CategoryController::class)->except(['show']);
 
 // --- 商品（基本情報。未公開も含む） ---
 Route::apiResource('products', ProductController::class);
+
+// --- 商品画像（URLの形がapiResourceの規約と合わないので手書き。reorderは静的パス） ---
+Route::post('/products/{product}/images', [ProductImageController::class, 'store']);
+Route::put('/products/{product}/images/reorder', [ProductImageController::class, 'reorder']);
+Route::delete('/product-images/{productImage}', [ProductImageController::class, 'destroy']);
 
 Route::get('/content', [SiteContentController::class, 'index']);
 // {key}は4種のいずれかに制約（不一致は404。docs/backend/cms.md「不正なkeyは404」）
