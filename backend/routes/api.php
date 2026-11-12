@@ -29,6 +29,7 @@ Route::get('/health', function () {
 Route::get('/content', [SiteContentController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{slug}', [ProductController::class, 'show']);
 
 // --- 認証（公開） ---
 Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
