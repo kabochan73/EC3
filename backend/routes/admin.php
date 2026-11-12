@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\CategoryController;
+use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\SiteContentController;
 use App\Models\SiteContent;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 // reorderは静的パスなのでapiResourceの{category}より先に登録する（後だと"reorder"がidとして解釈される）
 Route::put('/categories/reorder', [CategoryController::class, 'reorder']);
 Route::apiResource('categories', CategoryController::class)->except(['show']);
+
+// --- 商品（基本情報。未公開も含む） ---
+Route::apiResource('products', ProductController::class);
 
 Route::get('/content', [SiteContentController::class, 'index']);
 // {key}は4種のいずれかに制約（不一致は404。docs/backend/cms.md「不正なkeyは404」）
