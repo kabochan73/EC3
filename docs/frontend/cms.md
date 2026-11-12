@@ -1,6 +1,6 @@
 # 軽量CMS（frontend）
 
-backend側は [docs/backend/cms.md](../backend/cms.md) 参照。実装は`features/public/catalog/`（公開側）と`features/admin/content/`（管理側）（[docs/frontend/folder-structure.md](./folder-structure.md)）。
+backend側は [docs/backend/cms.md](../backend/cms.md) 参照。実装は`features/public/content/`（公開側）と`features/admin/content/`（管理側）（[docs/frontend/folder-structure.md](./folder-structure.md)）。
 
 **今回の変更点**: Heroを単一画像から、複数画像が自動で切り替わるスライドショーに変更した（[docs/02-decisions-log.md](../02-decisions-log.md)）。
 
@@ -17,7 +17,7 @@ export async function getContent(): Promise<SiteContent> {
 }
 ```
 
-トップページ（Server Component、`features/public/catalog`配下のコンポーネントを組み合わせる）:
+トップページ（Server Component、`features/public/content`と`features/public/catalog`配下のコンポーネントを組み合わせる）:
 ```tsx
 const [content, products, categories] = await Promise.all([getContent(), getProducts(), getCategories()]);
 // <Hero headline={content.hero.headline} tagline={content.hero.tagline} images={content.hero.images} />

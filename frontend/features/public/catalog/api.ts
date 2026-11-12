@@ -4,15 +4,7 @@ import { ApiError, apiServerFetch } from "@/shared/lib/api-server";
 import { tags } from "@/shared/lib/revalidate";
 import type { ApiCollection, ApiResource } from "@/shared/types";
 
-import type { Category, ProductDetail, ProductSummary, SiteContent } from "./types";
-
-export async function getContent(): Promise<SiteContent> {
-  const res = await apiServerFetch<ApiResource<SiteContent>>("/api/content", {
-    next: { tags: [tags.content], revalidate: 3600 },
-  });
-
-  return res.data;
-}
+import type { Category, ProductDetail, ProductSummary } from "./types";
 
 /** 未公開・存在しないslugはnull（呼び出し側がnotFound()する）。 */
 export async function getProduct(slug: string): Promise<ProductDetail | null> {

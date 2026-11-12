@@ -2,7 +2,7 @@
 // （docs/api/admin.md GET /api/admin/content）。
 
 import { apiServerFetch } from "@/shared/lib/api-server";
-import type { SiteContent } from "@/features/public/catalog/types";
+import type { SiteContent } from "@/features/public/content/types";
 import type { ApiResource } from "@/shared/types";
 
 export async function getAdminContent(): Promise<SiteContent> {

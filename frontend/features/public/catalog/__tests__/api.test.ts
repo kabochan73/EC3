@@ -12,31 +12,7 @@ vi.mock("@/shared/lib/api-server", async () => {
 });
 
 import { ApiError, apiServerFetch } from "@/shared/lib/api-server";
-import { getCategories, getContent, getProduct, getProducts } from "../api";
-
-describe("getContent", () => {
-  beforeEach(() => {
-    vi.mocked(apiServerFetch).mockReset();
-  });
-
-  it("/api/contentをISRタグ付きで呼び、dataを返す", async () => {
-    const content = {
-      hero: { headline: "H", tagline: "T", images: [] },
-      concept: { body: "B" },
-      lookbook: { images: [] },
-      about: { blocks: [] },
-    };
-    vi.mocked(apiServerFetch).mockResolvedValue({ data: content });
-
-    const result = await getContent();
-
-    expect(apiServerFetch).toHaveBeenCalledWith(
-      "/api/content",
-      expect.objectContaining({ next: { tags: ["content"], revalidate: 3600 } }),
-    );
-    expect(result).toEqual(content);
-  });
-});
+import { getCategories, getProduct, getProducts } from "../api";
 
 describe("getCategories", () => {
   beforeEach(() => {

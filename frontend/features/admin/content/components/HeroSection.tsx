@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import type { ContentImage, SiteContent } from "@/features/public/catalog/types";
+import type { ContentImage, SiteContent } from "@/features/public/content/types";
 import { moveItem } from "@/shared/lib/array";
 
 import { useContentSave } from "../hooks/useContentSave";

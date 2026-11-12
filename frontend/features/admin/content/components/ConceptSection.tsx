@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import type { SiteContent } from "@/features/public/catalog/types";
+import type { SiteContent } from "@/features/public/content/types";
 
 import { useContentSave } from "../hooks/useContentSave";
 import { conceptSchema } from "./ConceptSection.schema";

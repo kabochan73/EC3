@@ -1,9 +1,10 @@
-import { getCategories, getContent, getProducts } from "@/features/public/catalog/api";
-import { AboutSection } from "@/features/public/catalog/components/AboutSection";
-import { BrandConcept } from "@/features/public/catalog/components/BrandConcept";
+import { getCategories, getProducts } from "@/features/public/catalog/api";
 import { CategoryGrid } from "@/features/public/catalog/components/CategoryGrid";
-import { Hero } from "@/features/public/catalog/components/Hero";
-import { Lookbook } from "@/features/public/catalog/components/Lookbook";
+import { getContent } from "@/features/public/content/api";
+import { AboutSection } from "@/features/public/content/components/AboutSection";
+import { BrandConcept } from "@/features/public/content/components/BrandConcept";
+import { Hero } from "@/features/public/content/components/Hero";
+import { Lookbook } from "@/features/public/content/components/Lookbook";
 
 /** トップページ（CMS駆動。docs/frontend/routing.md）。 */
 export default async function HomePage() {

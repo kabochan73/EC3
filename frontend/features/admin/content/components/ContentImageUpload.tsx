@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { apiClientFetch } from "@/shared/lib/api-client";
-import type { ContentImage } from "@/features/public/catalog/types";
+import type { ContentImage } from "@/features/public/content/types";
 
 type Props = {
   contentKey: string;

@@ -32,9 +32,13 @@ frontend/
 │       └── revalidate/route.ts   # 更新成功後にブラウザが呼ぶ、キャッシュ無効化専用の薄いRoute Handler（docs/frontend/rendering-strategy.md）
 ├── features/
 │   ├── public/
-│   │   ├── catalog/              # トップ・商品詳細
-│   │   │   ├── components/       Hero BrandConcept Lookbook CategoryGrid AboutSection ProductCard
-│   │   │   │                     ProductMedia Gallery VariantSelector Accordion SizeChartTable
+│   │   ├── content/               # トップのCMSセクション（Hero/Concept/Lookbook/About）
+│   │   │   ├── components/       Hero BrandConcept Lookbook AboutSection
+│   │   │   ├── types.ts          # SiteContent（features/admin/contentと共有）
+│   │   │   └── __tests__/
+│   │   ├── catalog/              # カテゴリ・商品（トップの商品グリッド・商品詳細）
+│   │   │   ├── components/       CategoryGrid ProductCard ProductMedia Gallery
+│   │   │   │                     VariantSelector Accordion SizeChartTable
 │   │   │   ├── types.ts
 │   │   │   └── __tests__/
 │   │   ├── cart/
