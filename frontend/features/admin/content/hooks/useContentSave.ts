@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { ZodType } from "zod";
 
 import { apiClientFetch } from "@/shared/lib/api-client";
+import { revalidateTags } from "@/shared/lib/revalidate";
 
 /**
  * CMSセクションの保存（docs/frontend/cms.md）。
@@ -41,11 +42,7 @@ export function useContentSave<T>(key: string, schema: ZodType<T>) {
       return false;
     }
 
-    await apiClientFetch("/api/revalidate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ tags: ["content"] }),
-    });
+    await revalidateTags(["content"]);
 
     setIsSaving(false);
     setSavedAt(Date.now());

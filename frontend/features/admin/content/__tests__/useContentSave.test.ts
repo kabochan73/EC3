@@ -6,7 +6,12 @@ vi.mock("@/shared/lib/api-client", () => ({
   apiClientFetch: vi.fn(),
 }));
 
+vi.mock("@/shared/lib/revalidate", () => ({
+  revalidateTags: vi.fn(),
+}));
+
 import { apiClientFetch } from "@/shared/lib/api-client";
+import { revalidateTags } from "@/shared/lib/revalidate";
 import { useContentSave } from "../hooks/useContentSave";
 
 const schema = z.object({ body: z.string().min(1, "本文を入力してください") });
@@ -14,6 +19,7 @@ const schema = z.object({ body: z.string().min(1, "本文を入力してくだ�
 describe("useContentSave", () => {
   beforeEach(() => {
     vi.mocked(apiClientFetch).mockReset();
+    vi.mocked(revalidateTags).mockReset();
   });
 
   it("保存成功でPUTとrevalidateの両方を呼び、savedAtをセットする", async () => {
@@ -27,16 +33,11 @@ describe("useContentSave", () => {
     });
 
     expect(saved).toBe(true);
-    expect(apiClientFetch).toHaveBeenNthCalledWith(
-      1,
+    expect(apiClientFetch).toHaveBeenCalledWith(
       "/api/admin/content/concept",
       expect.objectContaining({ method: "PUT" }),
     );
-    expect(apiClientFetch).toHaveBeenNthCalledWith(
-      2,
-      "/api/revalidate",
-      expect.objectContaining({ method: "POST" }),
-    );
+    expect(revalidateTags).toHaveBeenCalledWith(["content"]);
     await waitFor(() => expect(result.current.savedAt).not.toBeNull());
     expect(result.current.error).toBeNull();
   });
@@ -69,6 +70,7 @@ describe("useContentSave", () => {
 
     expect(saved).toBe(false);
     expect(apiClientFetch).toHaveBeenCalledTimes(1);
+    expect(revalidateTags).not.toHaveBeenCalled();
     expect(result.current.error).toBe("保存できませんでした。");
   });
 });
