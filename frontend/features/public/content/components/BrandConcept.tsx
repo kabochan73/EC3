@@ -7,7 +7,7 @@ export function BrandConcept({ body }: Props) {
   if (!body) return null;
 
   return (
-    <section className="mx-auto max-w-2xl px-6 py-24 text-center">
+    <section className="mx-auto w-full max-w-2xl px-6 py-24 text-center">
       {body.split("\n").map((line, index) => (
         <p key={index} className="text-sm leading-loose tracking-wide">
           {line}

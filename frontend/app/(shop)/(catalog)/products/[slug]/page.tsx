@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { getProduct } from "@/features/public/catalog/api";
 import { Accordion } from "@/features/public/catalog/components/Accordion";
 import { Gallery } from "@/features/public/catalog/components/Gallery";
-import { ProductCard } from "@/features/public/catalog/components/ProductCard";
 import { SizeChartTable } from "@/features/public/catalog/components/SizeChartTable";
 import { VariantSelector } from "@/features/public/catalog/components/VariantSelector";
 import { formatYen } from "@/shared/lib/format";
@@ -30,7 +29,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
   if (!product) notFound();
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-12">
+    <div className="mx-auto w-full max-w-6xl px-6 py-12">
       <nav className="mb-8 text-[11px] tracking-widest text-graphite uppercase">
         <Link href="/" className="hover:text-ink">
           Home
@@ -88,19 +87,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </div>
         </div>
       </div>
-
-      {product.related.length > 0 && (
-        <section className="mt-24 border-t border-ink pt-16">
-          <h2 className="mb-10 text-2xl font-medium tracking-[0.15em] uppercase">
-            You May Also Like
-          </h2>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
-            {product.related.map((related) => (
-              <ProductCard key={related.id} product={related} />
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }

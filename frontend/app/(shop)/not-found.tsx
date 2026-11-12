@@ -3,7 +3,7 @@ import Link from "next/link";
 /** (shop)配下のnotFound()用（商品詳細の404など。docs/frontend/routing.md）。 */
 export default function ShopNotFound() {
   return (
-    <div className="mx-auto flex min-h-[60vh] max-w-md flex-col items-center justify-center px-6 text-center">
+    <div className="mx-auto flex min-h-[60vh] w-full max-w-md flex-col items-center justify-center px-6 text-center">
       <p className="text-4xl font-medium tracking-[0.2em]">404</p>
       <p className="mt-4 text-xs tracking-[0.2em] text-graphite uppercase">Page not found</p>
       <Link
