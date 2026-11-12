@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductImageController;
 use App\Http\Controllers\Api\Admin\SiteContentController;
+use App\Http\Controllers\Api\Admin\VariantController;
 use App\Models\SiteContent;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,13 @@ Route::apiResource('products', ProductController::class);
 Route::post('/products/{product}/images', [ProductImageController::class, 'store']);
 Route::put('/products/{product}/images/reorder', [ProductImageController::class, 'reorder']);
 Route::delete('/product-images/{productImage}', [ProductImageController::class, 'destroy']);
+
+// --- バリアント（サイズ×色）---
+// shallow: 作成は「どの商品か」が要るので/products/{product}/variants、
+// 作成後はidだけで特定できるので/variants/{variant}
+Route::apiResource('products.variants', VariantController::class)
+    ->shallow()
+    ->only(['store', 'update', 'destroy']);
 
 Route::get('/content', [SiteContentController::class, 'index']);
 // {key}は4種のいずれかに制約（不一致は404。docs/backend/cms.md「不正なkeyは404」）

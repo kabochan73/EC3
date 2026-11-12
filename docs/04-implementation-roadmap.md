@@ -56,7 +56,7 @@
 **backend**
 - [x] 20. DB: `categories`/`products`/`product_images`/`product_variants`マイグレーション
 - [x] 21. 公開API: `Api/CategoryController`、`Api/ProductController`（index/show）+ テスト
-- [ ] 22. 管理API: 商品・画像・バリアントCRUD + テスト
+- [x] 22. 管理API: 商品・画像・バリアントCRUD + テスト
 
 **frontend**
 - [ ] 23. トップページに商品セクションを追加（[フェーズ3](#フェーズ3-cms)で作ったCMSセクションの下に差し込む）+ 商品カード
