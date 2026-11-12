@@ -54,7 +54,7 @@
 ## フェーズ4: カテゴリ・商品管理
 
 **backend**
-- [ ] 20. DB: `categories`/`products`/`product_images`/`product_variants`マイグレーション
+- [x] 20. DB: `categories`/`products`/`product_images`/`product_variants`マイグレーション
 - [ ] 21. 公開API: `Api/CategoryController`、`Api/ProductController`（index/show）+ テスト
 - [ ] 22. 管理API: 商品・画像・バリアントCRUD + テスト
 
