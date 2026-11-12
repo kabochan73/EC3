@@ -28,3 +28,37 @@ export type SiteContent = {
     blocks: AboutBlock[];
   };
 };
+
+// backend/app/Enums/StockStatus.php
+
+export type StockStatus = "sold_out" | "low_stock" | "in_stock";
+
+// backend/app/Http/Resources/Shop/CategoryResource
+
+export type Category = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
+// backend/app/Http/Resources/Shop/ProductImageResource
+
+export type ProductImage = {
+  id: number;
+  url: string;
+  alt: string | null;
+  position: number;
+};
+
+// backend/app/Http/Resources/Shop/ProductSummaryResource（一覧カード・関連商品で共通）
+
+export type ProductSummary = {
+  id: number;
+  name: string;
+  slug: string;
+  price: number;
+  category: { name: string; slug: string };
+  stock_status: StockStatus;
+  is_new: boolean;
+  images: ProductImage[];
+};

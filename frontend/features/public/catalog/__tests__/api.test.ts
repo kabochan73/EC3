@@ -12,7 +12,7 @@ vi.mock("@/shared/lib/api-server", async () => {
 });
 
 import { apiServerFetch } from "@/shared/lib/api-server";
-import { getContent } from "../api";
+import { getCategories, getContent, getProducts } from "../api";
 
 describe("getContent", () => {
   beforeEach(() => {
@@ -35,5 +35,52 @@ describe("getContent", () => {
       expect.objectContaining({ next: { tags: ["content"], revalidate: 3600 } }),
     );
     expect(result).toEqual(content);
+  });
+});
+
+describe("getCategories", () => {
+  beforeEach(() => {
+    vi.mocked(apiServerFetch).mockReset();
+  });
+
+  it("/api/categoriesをISRタグ付きで呼び、dataを返す", async () => {
+    const categories = [{ id: 1, name: "トップス", slug: "tops" }];
+    vi.mocked(apiServerFetch).mockResolvedValue({ data: categories });
+
+    const result = await getCategories();
+
+    expect(apiServerFetch).toHaveBeenCalledWith(
+      "/api/categories",
+      expect.objectContaining({ next: { tags: ["categories"], revalidate: 3600 } }),
+    );
+    expect(result).toEqual(categories);
+  });
+});
+
+describe("getProducts", () => {
+  beforeEach(() => {
+    vi.mocked(apiServerFetch).mockReset();
+  });
+
+  it("オプション無しでは/api/productsをクエリ無しで呼ぶ", async () => {
+    vi.mocked(apiServerFetch).mockResolvedValue({ data: [] });
+
+    await getProducts();
+
+    expect(apiServerFetch).toHaveBeenCalledWith(
+      "/api/products",
+      expect.objectContaining({ next: { tags: ["products"], revalidate: 600 } }),
+    );
+  });
+
+  it("category/isNew/limitを指定すると対応するクエリ文字列を付ける", async () => {
+    vi.mocked(apiServerFetch).mockResolvedValue({ data: [] });
+
+    await getProducts({ category: "tops", isNew: true, limit: 4 });
+
+    expect(apiServerFetch).toHaveBeenCalledWith(
+      "/api/products?category=tops&new=true&limit=4",
+      expect.anything(),
+    );
   });
 });
