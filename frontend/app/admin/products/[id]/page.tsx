@@ -7,6 +7,7 @@ import type { AdminCategory } from "@/features/admin/categories/types";
 import { getAdminProduct } from "@/features/admin/products/api";
 import { EditProductForm } from "@/features/admin/products/components/EditProductForm";
 import { ProductImagesManager } from "@/features/admin/products/components/ProductImagesManager";
+import { VariantsManager } from "@/features/admin/products/components/VariantsManager";
 import type { AdminProduct } from "@/features/admin/products/types";
 import { ApiError } from "@/shared/lib/api-server";
 
@@ -45,6 +46,8 @@ export default async function EditProductPage({ params }: PageProps) {
       <EditProductForm product={product} categories={categories} />
       <hr className="my-10 border-mist" />
       <ProductImagesManager productId={product.id} productSlug={product.slug} images={product.images} />
+      <hr className="my-10 border-mist" />
+      <VariantsManager productId={product.id} productSlug={product.slug} variants={product.variants} />
     </div>
   );
 }
