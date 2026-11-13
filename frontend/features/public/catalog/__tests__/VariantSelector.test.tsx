@@ -1,6 +1,8 @@
-import { describe, it, expect } from "vitest";
+import { beforeEach, describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import { useCartStore } from "@/features/public/cart/stores/cart";
 
 import { VariantSelector } from "../components/VariantSelector";
 import type { ProductVariant } from "../types";
@@ -17,9 +19,20 @@ function variant(overrides: Partial<ProductVariant> = {}): ProductVariant {
   };
 }
 
+const baseProps = {
+  productSlug: "boxy-tee",
+  productName: "ボクシーTシャツ",
+  price: 12000,
+  imageUrl: null,
+};
+
+beforeEach(() => {
+  useCartStore.setState({ items: [] });
+});
+
 describe("VariantSelector", () => {
   it("色が無い商品ではColor見出しを表示しない", () => {
-    render(<VariantSelector colors={[]} variants={[variant()]} />);
+    render(<VariantSelector {...baseProps} colors={[]} variants={[variant()]} />);
 
     expect(screen.queryByText("Color")).not.toBeInTheDocument();
   });
@@ -27,6 +40,7 @@ describe("VariantSelector", () => {
   it("色がある商品では最初の色が選択された状態で始まる", () => {
     render(
       <VariantSelector
+        {...baseProps}
         colors={["黒", "白"]}
         variants={[
           variant({ id: 1, color: "黒", size: "M" }),
@@ -39,14 +53,14 @@ describe("VariantSelector", () => {
   });
 
   it("サイズ未選択ではAdd to Cartが非活性", () => {
-    render(<VariantSelector colors={[]} variants={[variant()]} />);
+    render(<VariantSelector {...baseProps} colors={[]} variants={[variant()]} />);
 
     expect(screen.getByRole("button", { name: "Add to Cart" })).toBeDisabled();
   });
 
   it("選択可能なサイズを選ぶとAdd to Cartが活性化する", async () => {
     const user = userEvent.setup();
-    render(<VariantSelector colors={[]} variants={[variant({ size: "M" })]} />);
+    render(<VariantSelector {...baseProps} colors={[]} variants={[variant({ size: "M" })]} />);
 
     await user.click(screen.getByRole("button", { name: "M" }));
 
@@ -57,6 +71,7 @@ describe("VariantSelector", () => {
     const user = userEvent.setup();
     render(
       <VariantSelector
+        {...baseProps}
         colors={[]}
         variants={[variant({ size: "M", stock_status: "sold_out", selectable: false })]}
       />,
@@ -70,7 +85,9 @@ describe("VariantSelector", () => {
   });
 
   it("low_stockのサイズには(low stock)の表示が付く", () => {
-    render(<VariantSelector colors={[]} variants={[variant({ size: "M", stock_status: "low_stock" })]} />);
+    render(
+      <VariantSelector {...baseProps} colors={[]} variants={[variant({ size: "M", stock_status: "low_stock" })]} />,
+    );
 
     expect(screen.getByText("(low stock)")).toBeInTheDocument();
   });
@@ -79,6 +96,7 @@ describe("VariantSelector", () => {
     const user = userEvent.setup();
     render(
       <VariantSelector
+        {...baseProps}
         colors={["黒", "白"]}
         variants={[
           variant({ id: 1, color: "黒", size: "S" }),
@@ -95,5 +113,33 @@ describe("VariantSelector", () => {
     expect(screen.queryByRole("button", { name: "S" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "M" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Add to Cart" })).toBeDisabled();
+  });
+
+  it("Add to Cartを押すとカートストアに追加され、ボタンがAddedに変わる", async () => {
+    const user = userEvent.setup();
+    render(
+      <VariantSelector
+        {...baseProps}
+        colors={["黒"]}
+        variants={[variant({ id: 7, color: "黒", size: "M" })]}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "M" }));
+    await user.click(screen.getByRole("button", { name: "Add to Cart" }));
+
+    expect(useCartStore.getState().items).toEqual([
+      {
+        variantId: 7,
+        productSlug: "boxy-tee",
+        productName: "ボクシーTシャツ",
+        size: "M",
+        color: "黒",
+        unitPrice: 12000,
+        quantity: 1,
+        imageUrl: null,
+      },
+    ]);
+    expect(screen.getByRole("button", { name: "Added" })).toBeInTheDocument();
   });
 });

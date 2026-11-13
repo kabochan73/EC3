@@ -54,7 +54,14 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </div>
 
           <div className="mt-8">
-            <VariantSelector colors={product.colors} variants={product.variants} />
+            <VariantSelector
+              productSlug={product.slug}
+              productName={product.name}
+              price={product.price}
+              imageUrl={product.images.find((image) => image.position === 0)?.url ?? null}
+              colors={product.colors}
+              variants={product.variants}
+            />
           </div>
 
           <div className="mt-10 divide-y divide-ink border-t border-b border-ink">
