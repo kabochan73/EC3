@@ -99,10 +99,14 @@ describe("useCartHydrated", () => {
   });
 
   it("復元前はfalseを返し、復元完了後にtrueになる", () => {
-    let finishCallback: () => void = () => {};
-    vi.spyOn(useCartStore.persist, "hasHydrated").mockReturnValue(false);
-    vi.spyOn(useCartStore.persist, "onFinishHydration").mockImplementation((callback) => {
-      finishCallback = () => callback(useCartStore.getState());
+    let hydrated = false;
+    let notifyFinished: () => void = () => {};
+    vi.spyOn(useCartStore.persist, "hasHydrated").mockImplementation(() => hydrated);
+    vi.spyOn(useCartStore.persist, "onFinishHydration").mockImplementation((onStoreChange) => {
+      notifyFinished = () => {
+        hydrated = true;
+        onStoreChange(useCartStore.getState());
+      };
       return () => {};
     });
 
@@ -111,7 +115,7 @@ describe("useCartHydrated", () => {
     expect(result.current).toBe(false);
 
     act(() => {
-      finishCallback();
+      notifyFinished();
     });
 
     expect(result.current).toBe(true);

@@ -5,7 +5,7 @@
 // GET /api/cart/validateにより再検証する。確定金額はPOST /api/ordersでサーバーが
 // 再計算するので、ここがズレても実害はない。
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -82,13 +82,16 @@ export function useCartItemCount(): number {
 /**
  * localStorageからの復元が終わったか。復元前はitemsが必ず[]なので、
  * これを見ずに「空のカート」を出すと、中身があっても一瞬Your cart is emptyが見えてしまう。
+ *
+ * useEffect+useStateだと、CartHydrationのrehydrate()（localStorageは同期APIなので
+ * 復元も同期的に終わる）がこのeffectより先に走った場合、onFinishHydrationの購読が
+ * 間に合わず一生trueにならない。useSyncExternalStoreは購読直後に現在値を取り直すので
+ * このレースが起きない。
  */
 export function useCartHydrated(): boolean {
-  const [hydrated, setHydrated] = useState(() => useCartStore.persist.hasHydrated());
-
-  useEffect(() => {
-    return useCartStore.persist.onFinishHydration(() => setHydrated(true));
-  }, []);
-
-  return hydrated;
+  return useSyncExternalStore(
+    (onStoreChange) => useCartStore.persist.onFinishHydration(onStoreChange),
+    () => useCartStore.persist.hasHydrated(),
+    () => false,
+  );
 }

@@ -77,7 +77,7 @@
 - [x] 28. カート再検証API（`/api/cart/validate`）+ テスト
 
 **frontend**
-- [ ] 29. カート（zustand + localStorage、`/cart`ページ）
+- [x] 29. カート（zustand + localStorage、`/cart`ページ）
 
 ## フェーズ7: 注文
 
