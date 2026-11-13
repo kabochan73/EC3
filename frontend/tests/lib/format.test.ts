@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { formatYen } from "@/shared/lib/format";
+import { formatDate, formatYen } from "@/shared/lib/format";
 
 describe("formatYen", () => {
   it("3桁ごとにカンマを入れて¥を先頭に付ける", () => {
@@ -12,5 +12,21 @@ describe("formatYen", () => {
 
   it("0も¥0として表示する", () => {
     expect(formatYen(0)).toBe("¥0");
+  });
+});
+
+describe("formatDate", () => {
+  it("「yyyy/mm/dd」の形で日本時間に変換する", () => {
+    // UTC 2026-11-12T23:30:00 は JST 2026-11-13 8:30
+    expect(formatDate("2026-11-12T23:30:00Z")).toBe("2026/11/13");
+  });
+
+  it("日本時間の深夜0〜9時のUTC日付をまたぐケースでも日本時間の日付になる", () => {
+    // UTC 2026-11-12T16:00:00 は JST 2026-11-13 1:00（日付がまたぐ）
+    expect(formatDate("2026-11-12T16:00:00Z")).toBe("2026/11/13");
+  });
+
+  it("nullなら「—」を返す", () => {
+    expect(formatDate(null)).toBe("—");
   });
 });
