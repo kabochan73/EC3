@@ -5,6 +5,7 @@
 // GET /api/cart/validateにより再検証する。確定金額はPOST /api/ordersでサーバーが
 // 再計算するので、ここがズレても実害はない。
 
+import { useEffect, useState } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -76,4 +77,18 @@ export const useCartStore = create<CartState>()(
 /** ヘッダーのCART (n)用。数量合計（行数ではない）。 */
 export function useCartItemCount(): number {
   return useCartStore((state) => state.items.reduce((sum, i) => sum + i.quantity, 0));
+}
+
+/**
+ * localStorageからの復元が終わったか。復元前はitemsが必ず[]なので、
+ * これを見ずに「空のカート」を出すと、中身があっても一瞬Your cart is emptyが見えてしまう。
+ */
+export function useCartHydrated(): boolean {
+  const [hydrated, setHydrated] = useState(() => useCartStore.persist.hasHydrated());
+
+  useEffect(() => {
+    return useCartStore.persist.onFinishHydration(() => setHydrated(true));
+  }, []);
+
+  return hydrated;
 }

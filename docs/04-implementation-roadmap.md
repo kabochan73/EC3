@@ -74,7 +74,7 @@
 ## フェーズ6: カート
 
 **backend**
-- [ ] 28. カート再検証API（`/api/cart/validate`）+ テスト
+- [x] 28. カート再検証API（`/api/cart/validate`）+ テスト
 
 **frontend**
 - [ ] 29. カート（zustand + localStorage、`/cart`ページ）

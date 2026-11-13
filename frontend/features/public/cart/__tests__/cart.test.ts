@@ -1,7 +1,7 @@
-import { beforeEach, describe, it, expect } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { beforeEach, describe, it, expect, vi } from "vitest";
+import { act, renderHook } from "@testing-library/react";
 
-import { useCartItemCount, useCartStore } from "../stores/cart";
+import { useCartHydrated, useCartItemCount, useCartStore } from "../stores/cart";
 import type { CartItem } from "../types";
 
 function makeItem(overrides: Partial<CartItem> = {}): CartItem {
@@ -85,5 +85,35 @@ describe("useCartStore", () => {
     const { result } = renderHook(() => useCartItemCount());
 
     expect(result.current).toBe(5);
+  });
+});
+
+describe("useCartHydrated", () => {
+  it("hasHydrated()がtrueなら最初からtrueを返す", () => {
+    vi.spyOn(useCartStore.persist, "hasHydrated").mockReturnValue(true);
+    vi.spyOn(useCartStore.persist, "onFinishHydration").mockReturnValue(() => {});
+
+    const { result } = renderHook(() => useCartHydrated());
+
+    expect(result.current).toBe(true);
+  });
+
+  it("復元前はfalseを返し、復元完了後にtrueになる", () => {
+    let finishCallback: () => void = () => {};
+    vi.spyOn(useCartStore.persist, "hasHydrated").mockReturnValue(false);
+    vi.spyOn(useCartStore.persist, "onFinishHydration").mockImplementation((callback) => {
+      finishCallback = () => callback(useCartStore.getState());
+      return () => {};
+    });
+
+    const { result } = renderHook(() => useCartHydrated());
+
+    expect(result.current).toBe(false);
+
+    act(() => {
+      finishCallback();
+    });
+
+    expect(result.current).toBe(true);
   });
 });
