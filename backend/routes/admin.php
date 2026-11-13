@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\CategoryController;
+use App\Http\Controllers\Api\Admin\CustomerController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\ProductImageController;
 use App\Http\Controllers\Api\Admin\SiteContentController;
@@ -29,6 +30,9 @@ Route::delete('/product-images/{productImage}', [ProductImageController::class, 
 Route::apiResource('products.variants', VariantController::class)
     ->shallow()
     ->only(['store', 'update', 'destroy']);
+
+// --- 会員（閲覧のみ） ---
+Route::apiResource('customers', CustomerController::class)->only(['index', 'show']);
 
 Route::get('/content', [SiteContentController::class, 'index']);
 // {key}は4種のいずれかに制約（不一致は404。docs/backend/cms.md「不正なkeyは404」）
