@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Shop\CartController;
 use App\Http\Controllers\Api\Shop\CategoryController;
 use App\Http\Controllers\Api\Shop\ProductController;
 use App\Http\Controllers\Api\Shop\SiteContentController;
@@ -30,6 +31,7 @@ Route::get('/content', [SiteContentController::class, 'index']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{slug}', [ProductController::class, 'show']);
+Route::get('/cart/validate', [CartController::class, 'validate']);
 
 // --- 認証（公開） ---
 Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
