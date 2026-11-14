@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Account\AddressController;
 use App\Http\Controllers\Api\Account\ProfileController;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Order\OrderController;
 use App\Http\Controllers\Api\Shop\CartController;
 use App\Http\Controllers\Api\Shop\CategoryController;
 use App\Http\Controllers\Api\Shop\ProductController;
@@ -51,6 +52,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // 1件取得（show）は画面で使わないので外す。CRUDに収まらない「defaultに設定」だけ個別に足す
     Route::apiResource('addresses', AddressController::class)->except(['show']);
     Route::post('/addresses/{address}/default', [AddressController::class, 'setDefault']);
+
+    // --- 注文 ---
+    // メール認証は不要（誰でも購入体験できるようにしている）。
+    // {order_number}は注文番号（Order::getRouteKeyName）。throttleは作成だけ（ユーザーごとに5回/分）
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/orders', [OrderController::class, 'store'])->middleware('throttle:orders');
+    Route::get('/orders/{order}', [OrderController::class, 'show']);
 });
 
 // --- 管理API（auth:sanctum + admin。routes/admin.php） ---

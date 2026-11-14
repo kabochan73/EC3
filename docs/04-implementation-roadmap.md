@@ -84,7 +84,7 @@
 **backend**
 - [x] 30. DB: `addresses`/`orders`/`order_items`マイグレーション、state machine（`OrderStatus` Enum）
 - [x] 31. 住所録API + テスト
-- [ ] 32. 注文作成API（`CreateOrder` Action、在庫ロック・デッドロック回避）+ テスト
+- [x] 32. 注文作成API（`CreateOrder` Action、在庫ロック・デッドロック回避）+ テスト
 
 **frontend**
 - [ ] 33. チェックアウト（配送先入力→注文作成まで。決済ページはまだ無い）

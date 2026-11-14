@@ -32,5 +32,8 @@ class AppServiceProvider extends ServiceProvider
 
         // 会員登録（IPで5回/分）
         RateLimiter::for('register', fn (Request $request) => Limit::perMinute(5)->by($request->ip()));
+
+        // 注文作成（ユーザーごとに5回/分）
+        RateLimiter::for('orders', fn (Request $request) => Limit::perMinute(5)->by((string) $request->user()?->id));
     }
 }
