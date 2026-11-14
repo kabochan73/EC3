@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -20,6 +21,7 @@ type Props = {
 
 export function LoginForm({ redirectTo }: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -46,6 +48,8 @@ export function LoginForm({ redirectTo }: Props) {
       return;
     }
 
+    // ヘッダーのAccountLinkが即座にログイン状態へ貼り替わるようにする
+    await queryClient.invalidateQueries({ queryKey: ["session"] });
     router.push(safeRedirect(redirectTo));
     router.refresh();
   }

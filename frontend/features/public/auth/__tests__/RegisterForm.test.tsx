@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { RegisterForm } from "../components/RegisterForm";
 
@@ -16,6 +17,11 @@ vi.mock("@/shared/lib/api-client", () => ({
 }));
 
 import { apiClientFetch } from "@/shared/lib/api-client";
+
+function renderWithQueryClient(ui: React.ReactElement) {
+  const client = new QueryClient();
+  return render(<QueryClientProvider client={client}>{ui}</QueryClientProvider>);
+}
 
 describe("RegisterForm", () => {
   beforeEach(() => {
@@ -39,7 +45,7 @@ describe("RegisterForm", () => {
       }),
     } as Response);
 
-    render(<RegisterForm redirectTo="/account/orders" />);
+    renderWithQueryClient(<RegisterForm redirectTo="/account/orders" />);
     await fillValidForm();
     await userEvent.click(screen.getByRole("button", { name: /register/i }));
 
@@ -48,7 +54,7 @@ describe("RegisterForm", () => {
   });
 
   it("パスワードと確認が一致しないとクライアント側でエラーになる", async () => {
-    render(<RegisterForm redirectTo={null} />);
+    renderWithQueryClient(<RegisterForm redirectTo={null} />);
 
     await userEvent.type(screen.getByLabelText("Name"), "Aoi Tanaka");
     await userEvent.type(screen.getByLabelText("Email"), "aoi@example.com");
@@ -69,7 +75,7 @@ describe("RegisterForm", () => {
       }),
     } as Response);
 
-    render(<RegisterForm redirectTo={null} />);
+    renderWithQueryClient(<RegisterForm redirectTo={null} />);
     await fillValidForm();
     await userEvent.click(screen.getByRole("button", { name: /register/i }));
 

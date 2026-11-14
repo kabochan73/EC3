@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AccountLink } from "./AccountLink";
 import { CartCount } from "./CartCount";
 
 /**
@@ -8,8 +9,8 @@ import { CartCount } from "./CartCount";
  * 項目が少ないのでモバイルもハンバーガーにせず同じ1行バーをそのまま使う。
  * fixedで常に画面上部に重ねる。本文側は(shop)/layout.tsxのpt-16で高さを避ける。
  *
- * Header自体はServer Component。CART (n)だけClient Component（CartCount。カートはlocalStorage）。
- * LOGINは今はただのリンクで、ログイン状態の表示（AccountLink）はフェーズ7のマイページで差し替える。
+ * Header自体はServer Component。CART (n)とACCOUNTだけClient Component
+ * （CartCountはlocalStorage、AccountLinkはログイン状態をGET /api/meで確認するため）。
  */
 export function Header() {
   return (
@@ -23,9 +24,7 @@ export function Header() {
         </Link>
 
         <nav className="flex items-center gap-4 text-xs tracking-[0.12em] uppercase sm:gap-6 sm:tracking-[0.15em]">
-          <Link href="/login" className="transition-opacity hover:opacity-60">
-            Login
-          </Link>
+          <AccountLink />
           <CartCount />
         </nav>
       </div>
