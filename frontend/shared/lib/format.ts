@@ -20,3 +20,31 @@ export function formatDate(iso: string | null): string {
     day: "2-digit",
   });
 }
+
+/** 「2026/11/13 08:30」 */
+export function formatDateTime(iso: string | null): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("ja-JP", {
+    timeZone: TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+type OrderStatusValue = "pending" | "paid" | "shipped" | "completed" | "cancelled";
+
+const ORDER_STATUS_LABEL: Record<OrderStatusValue, string> = {
+  pending: "支払い待ち",
+  paid: "支払い済み",
+  shipped: "発送済み",
+  completed: "完了",
+  cancelled: "キャンセル済み",
+};
+
+/** 注文ステータスの日本語表示ラベル（docs/frontend/routing.md）。 */
+export function formatOrderStatus(status: OrderStatusValue): string {
+  return ORDER_STATUS_LABEL[status];
+}
