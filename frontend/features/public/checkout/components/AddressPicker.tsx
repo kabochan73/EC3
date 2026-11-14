@@ -1,7 +1,7 @@
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 
+import { ShippingAddress } from "@/shared/components/order/ShippingAddress";
 import { Field } from "@/shared/components/ui/Field";
-import { ShippingAddress } from "@/shared/components/ui/ShippingAddress";
 
 import type { NewAddressFormValues } from "./CheckoutClient.schema";
 import type { Address } from "../types";

@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { currentUnitPrice, lineProblem, type CartTotals } from "@/features/public/cart/cart-summary";
 import type { CartItem, CartLineValidation } from "@/features/public/cart/types";
+import { AmountSummary } from "@/shared/components/order/AmountSummary";
 import { formatYen } from "@/shared/lib/format";
 
 type Props = {
@@ -59,20 +60,9 @@ export function OrderReview({ items, getValidation, totals }: Props) {
         })}
       </ul>
 
-      <dl className="mt-6 space-y-3 text-sm">
-        <div className="flex justify-between">
-          <dt className="text-[11px] tracking-widest text-graphite uppercase">Subtotal</dt>
-          <dd>{formatYen(totals.subtotal)}</dd>
-        </div>
-        <div className="flex justify-between">
-          <dt className="text-[11px] tracking-widest text-graphite uppercase">Shipping</dt>
-          <dd>{totals.shipping === 0 ? "Free" : formatYen(totals.shipping)}</dd>
-        </div>
-        <div className="flex justify-between border-t border-ink pt-3 text-base">
-          <dt className="text-[11px] tracking-widest text-graphite uppercase">Total</dt>
-          <dd>{formatYen(totals.total)}</dd>
-        </div>
-      </dl>
+      <div className="mt-6">
+        <AmountSummary subtotal={totals.subtotal} shipping={totals.shipping} total={totals.total} />
+      </div>
     </div>
   );
 }
